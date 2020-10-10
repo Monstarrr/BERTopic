@@ -1,3 +1,6 @@
+import warnings
+warnings.filterwarnings("ignore", category=FutureWarning)
+
 import joblib
 import logging
 import numpy as np
@@ -12,7 +15,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 # utils
-from bertopic.utils import create_logger
+from bertopic.utils import create_logger, check_documents_type
 logger = create_logger()
 
 
@@ -89,6 +92,7 @@ class BERTopic:
         documents : List[str]
             A list of documents to fit on
         """
+        check_documents_type(documents)
         self.fit_transform(documents)
         return self
 
@@ -114,6 +118,7 @@ class BERTopic:
         predictions : List[int]
             Topic predictions for each documents
         """
+        check_documents_type(documents)
         documents = pd.DataFrame({"Document": documents,
                                   "ID": range(len(documents)),
                                   "Topic": None})
