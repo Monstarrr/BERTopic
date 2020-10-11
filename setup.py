@@ -25,7 +25,7 @@ test_packages = [
 setuptools.setup(
     name="bertopic",
     packages=["bertopic"],
-    version="0.1.2",
+    version="0.2.0",
     author="Maarten Grootendorst",
     author_email="maartengrootendorst@gmail.com",
     description="BERTopic performs topic Modeling with state-of-the-art transformer models.",

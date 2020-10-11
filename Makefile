@@ -1,5 +1,5 @@
 test:
-	pytest --cov=./ --cov-report=xml
+	pytest
 
 install:
 	python -m pip install -e .
