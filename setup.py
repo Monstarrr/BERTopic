@@ -1,7 +1,5 @@
 import setuptools
 
-import bertopic
-
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
@@ -27,7 +25,7 @@ test_packages = [
 setuptools.setup(
     name="bertopic",
     packages=["bertopic"],
-    version=bertopic.__version__,
+    version="0.1.2",
     author="Maarten Grootendorst",
     author_email="maartengrootendorst@gmail.com",
     description="BERTopic performs topic Modeling with state-of-the-art transformer models.",
