@@ -39,6 +39,7 @@ setuptools.setup(
         'scikit_learn',
         'sentence_transformers',
         'joblib',
+        'scipy'
       ],
     python_requires='>=3.6',
 )

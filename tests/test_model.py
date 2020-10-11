@@ -63,17 +63,17 @@ def test_cluster_embeddings(base_bertopic, samples, features, centers):
 
 
 def test_extract_topics(base_bertopic):
-    """ Test whether the topics are correctly extracted using TF-IDF """
+    """ Test whether the topics are correctly extracted using c-TF-IDF """
     nr_topics = 5
     documents = pd.DataFrame({"Document": newsgroup_docs,
                               "ID": range(len(newsgroup_docs)),
                               "Topic": np.random.randint(-1, nr_topics-1, len(newsgroup_docs))})
     base_bertopic._update_topic_size(documents)
-    tfidf = base_bertopic._extract_topics(documents, topic_reduction=False)
+    c_tf_idf = base_bertopic._extract_topics(documents, topic_reduction=False)
     freq = base_bertopic.get_topics_freq()
 
-    assert tfidf.shape[1] == 5
-    assert tfidf.shape[0] > 100
+    assert c_tf_idf.shape[0] == 5
+    assert c_tf_idf.shape[1] > 100
     assert isinstance(freq, pd.DataFrame)
     assert nr_topics == len(freq.Topic.unique())
     assert freq.Count.sum() == len(documents)
@@ -90,10 +90,10 @@ def test_topic_reduction(reduced_topics):
                                   "ID": range(len(newsgroup_docs)),
                                   "Topic": np.random.randint(-1, nr_topics-1, len(newsgroup_docs))})
     base_bertopic._update_topic_size(old_documents)
-    tf_idf = base_bertopic._extract_topics(old_documents.copy(), topic_reduction=True)
+    c_tf_idf = base_bertopic._extract_topics(old_documents.copy(), topic_reduction=True)
     old_freq = base_bertopic.get_topics_freq()
 
-    new_documents = base_bertopic._reduce_topics(old_documents.copy(), tf_idf)
+    new_documents = base_bertopic._reduce_topics(old_documents.copy(), c_tf_idf)
     new_freq = base_bertopic.get_topics_freq()
 
     assert nr_topics == len(old_freq.Topic.unique())
@@ -119,10 +119,10 @@ def test_topic_reduction_edge_cases(base_bertopic):
                                   "ID": range(len(newsgroup_docs)),
                                   "Topic": np.random.randint(-1, nr_topics-1, len(newsgroup_docs))})
     base_bertopic._update_topic_size(old_documents)
-    tf_idf = base_bertopic._extract_topics(old_documents, topic_reduction=True)
+    c_tf_idf = base_bertopic._extract_topics(old_documents, topic_reduction=True)
     old_freq = base_bertopic.get_topics_freq()
 
-    new_documents = base_bertopic._reduce_topics(old_documents, tf_idf)
+    new_documents = base_bertopic._reduce_topics(old_documents, c_tf_idf)
     new_freq = base_bertopic.get_topics_freq()
 
     assert not set(old_documents.Topic).difference(set(new_documents.Topic))
