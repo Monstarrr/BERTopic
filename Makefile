@@ -1,5 +1,5 @@
 test:
-	pytest --cov=bertopic --cov-report=xml
+	pytest --cov=./ --cov-report=xml
 
 install:
 	python -m pip install -e .
