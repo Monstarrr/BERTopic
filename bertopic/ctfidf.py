@@ -1,7 +1,8 @@
+from sklearn.feature_extraction.text import TfidfTransformer
+from sklearn.preprocessing import normalize
+from sklearn.utils import check_array
 import numpy as np
 import scipy.sparse as sp
-from sklearn.feature_extraction.text import TfidfTransformer
-from sklearn.utils import check_array
 
 
 def _document_frequency(X):
@@ -32,16 +33,22 @@ class ClassTFIDF(TfidfTransformer):
             _, n_features = X.shape
             df = _document_frequency(X)
 
-            # perform idf smoothing if required
-            df += int(self.smooth_idf)
-            n_samples += int(self.smooth_idf)
-
             # log+1 instead of log makes sure terms with zero idf don't get
             # suppressed entirely.
-            idf = np.log(n_samples / df) + 1
+            idf = np.log(n_samples / df)
             self._idf_diag = sp.diags(idf, offsets=0,
                                       shape=(n_features, n_features),
                                       format='csr',
                                       dtype=dtype)
 
         return self
+
+    def transform(self, X, copy=True):
+
+        n_samples, n_features = X.shape
+
+        if self.use_idf:
+            X = normalize(X, axis=1, norm='l1', copy=False)
+            X = X * self._idf_diag
+
+        return X
