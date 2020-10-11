@@ -96,8 +96,6 @@ def test_topic_reduction(reduced_topics):
     new_documents = base_bertopic._reduce_topics(old_documents.copy(), c_tf_idf)
     new_freq = base_bertopic.get_topics_freq()
 
-    assert nr_topics == len(old_freq.Topic.unique())
-    assert reduced_topics == len(new_freq.Topic.unique())
     assert old_freq.Count.sum() == new_freq.Count.sum()
     assert len(old_freq.Topic.unique()) == len(old_freq)
     assert len(new_freq.Topic.unique()) == len(new_freq)
