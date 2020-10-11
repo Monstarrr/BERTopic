@@ -296,7 +296,7 @@ class BERTopic:
         count = CountVectorizer(stop_words="english").fit(documents)
         words = count.get_feature_names()
         X = count.transform(documents)
-        transformer = ClassTFIDF(smooth_idf=True).fit(X, n_samples=m)
+        transformer = ClassTFIDF().fit(X, n_samples=m)
         c_tf_idf = transformer.transform(X).toarray()
 
         return c_tf_idf, words
